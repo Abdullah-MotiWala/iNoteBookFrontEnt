@@ -2,6 +2,7 @@
 
 # dependencies
 /node_modules
+/i_note_book_backend/node_modules
 /.pnp
 .pnp.js
 
