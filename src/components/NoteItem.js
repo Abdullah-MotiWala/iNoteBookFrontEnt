@@ -3,8 +3,8 @@ import noteContext from "../context/notes/noteContext";
 
 export default function NoteItem(props) {
   const context = useContext(noteContext);
-  const { delNotes } = context;
-
+  const { ediNotes, delNotes } = context;
+  //note getting from parent (Notes) component in noteObj
   const { noteObj } = props;
   return (
     <div className="card m-3 col-md-3 ">
@@ -17,7 +17,12 @@ export default function NoteItem(props) {
         <li className="list-group-item">#{noteObj.tags}</li>
       </ul>
       <div className="card-body">
-        <button className="btn btn-success m-2">Edit</button>
+        <button
+          className="btn btn-success m-2"
+          onClick={() => ediNotes(noteObj._id)}
+        >
+          Edit
+        </button>
         <button
           className="btn btn-danger m-2"
           onClick={() => delNotes(noteObj._id)}
