@@ -2,7 +2,7 @@ import React, { useState } from "react";
 import NoteContext from "./noteContext";
 
 const NoteState = (props) => {
-  const [curNotes, setCurNotes] = useState([
+  const notes = [
     {
       _id: "61db0317274527889dcc4c27",
       user: "61d5fe7bcf8885f94ce563b2",
@@ -66,10 +66,28 @@ const NoteState = (props) => {
       time: "2022-01-09T15:45:20.373Z",
       __v: 0
     }
-  ]);
+  ];
+  const [curNotes, setCurNotes] = useState(notes);
+
+  //addingNote
+  const addNotes = (noteAdd) => {
+    const {title,description,tags} = noteAdd
+    //TODO: calling api
+    const note = {
+      _id: "61db0317274527889dcc4c27",
+      user: "61d5fe7bcf8885f94ce563b2",
+      title: title,
+      description: description,
+      tags: tags,
+      time: "2022-01-09T15:45:20.373Z",
+      __v: 0
+    };
+    setCurNotes(notes.concat(note));
+  };
+
 
   return (
-    <NoteContext.Provider value={{ curNotes, setCurNotes }}>
+    <NoteContext.Provider value={{ curNotes, addNotes }}>
       {props.children}
     </NoteContext.Provider>
   );
