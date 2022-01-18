@@ -22,7 +22,7 @@ const NoteState = (props) => {
 
   //addingNote
   const addNotes = async (noteAdd) => {
-    console.log(noteAdd)
+    console.log(noteAdd);
     const { title, description, tags } = noteAdd;
 
     // API Call for adding notes
@@ -30,10 +30,11 @@ const NoteState = (props) => {
     const response = await fetch(url, {
       method: "POST",
       headers: {
-        "Content-Type":"application/json",
-        "auth-token":"eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJ1c2VyIjp7ImlkIjoiNjFkNWZlN2JjZjg4ODVmOTRjZTU2M2IyIn0sImlhdCI6MTY0MTQxNDI4OX0.GCI6haE-Y7XWS2u_EIsf0PTwmXFzccXVjAiN2VEIGEA"
+        "Content-Type": "application/json",
+        "auth-token":
+          "eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJ1c2VyIjp7ImlkIjoiNjFkNWZlN2JjZjg4ODVmOTRjZTU2M2IyIn0sImlhdCI6MTY0MTQxNDI4OX0.GCI6haE-Y7XWS2u_EIsf0PTwmXFzccXVjAiN2VEIGEA"
       },
-      body: JSON.stringify({title, description,tags})
+      body: JSON.stringify({ title, description, tags })
     });
 
     //logic for adding notes
@@ -69,21 +70,37 @@ const NoteState = (props) => {
     setCurNotes(afterDel);
   };
 
-  //editing nots
-  const ediNotes = (id, eTitle, eDes, eTags) => {
-    //logic
+  //editing notes
+  const editNotes = async (id, eTitle, eDes, eTags) => {
+    console.log(id, eTitle);
+    // API call for editing notes
+    let url = `${host}/api/notes/updatenotes/${id}`;
+    const response = await fetch(url, {
+      method: "PUT",
+      headers: {
+        "Content-Type": "application/json",
+        "auth-token":
+          "eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJ1c2VyIjp7ImlkIjoiNjFkNWZlN2JjZjg4ODVmOTRjZTU2M2IyIn0sImlhdCI6MTY0MTQxNDI4OX0.GCI6haE-Y7XWS2u_EIsf0PTwmXFzccXVjAiN2VEIGEA"
+      },
+      body: JSON.stringify({ eTitle, eDes, eTags })
+    });
+
+    //logic for editing notes
     for (let i = 0; i < curNotes.length; i++) {
       let targetNote = curNotes[i];
       if (targetNote._id === id) {
-        targetNote.title = eTitle;
-        targetNote.description = eDes;
-        targetNote.tags = eTags;
+        curNotes[i].title = eTitle;
+        curNotes[i].description = eDes;
+        curNotes[i].tags = eTags;
+        break;
       }
     }
+    setCurNotes(curNotes);
+    console.log(curNotes);
   };
   return (
     <NoteContext.Provider
-      value={{ curNotes, addNotes, delNotes, ediNotes, fetAllNotes }}
+      value={{ curNotes, addNotes, delNotes, editNotes, fetAllNotes }}
     >
       {props.children}
     </NoteContext.Provider>

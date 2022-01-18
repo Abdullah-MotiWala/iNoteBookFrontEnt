@@ -4,8 +4,9 @@ import noteContext from "../context/notes/noteContext";
 export default function NoteItem(props) {
   const context = useContext(noteContext);
   const { ediNotes, delNotes } = context;
+
   //note getting from parent (Notes) component in noteObj
-  const { noteObj } = props;
+  const { noteObj, updateNote } = props;
   return (
     <div className="card m-3 col-md-3 ">
       <div className="card-body">
@@ -19,7 +20,7 @@ export default function NoteItem(props) {
       <div className="card-body">
         <button
           className="btn btn-success m-2"
-          onClick={() => ediNotes(noteObj._id)}
+          onClick={() => updateNote(noteObj)}
         >
           Edit
         </button>
