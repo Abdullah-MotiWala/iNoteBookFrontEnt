@@ -2,13 +2,20 @@ import React, { useContext, useEffect, useRef, useState } from "react";
 import noteContext from "../context/notes/noteContext";
 import NoteItem from "./NoteItem";
 import { AddNotes } from "./AddNotes";
+import { useNavigate } from "react-router-dom";
 
 export default function Notes() {
+  const navigate = useNavigate();
   const context = useContext(noteContext);
   const { curNotes, fetAllNotes, editNotes } = context;
   // fetching notes function
   useEffect(() => {
-    fetAllNotes();
+    let authToken = localStorage.getItem("authToken");
+    if (!authToken) {
+      navigate("login");
+    } else {
+      fetAllNotes();
+    }
   }, []);
   const notesInitial = { id: "", etitle: "", edescription: "", etags: "" };
   const [notes, setNotes] = useState(notesInitial);
@@ -25,7 +32,6 @@ export default function Notes() {
   };
   const saveUpdNot = () => {
     editNotes(notes.id, notes.etitle, notes.edescription, notes.etags);
-    fetAllNotes()
     closeRef.current.click();
   };
 
@@ -118,6 +124,9 @@ export default function Notes() {
                 type="button"
                 className="btn btn-primary"
                 onClick={saveUpdNot}
+                disabled={
+                  notes.etitle.length < 5 || notes.edescription.length < 5
+                }
               >
                 Update Notes
               </button>
@@ -127,6 +136,10 @@ export default function Notes() {
       </div>
       <h4 className="my-4">Your Notes Here</h4>
       <div className="row">
+        <div className="container">
+          {curNotes.length === 0 && "Add notes to see here"}
+        </div>
+
         {/* passing all notes of curNotes in noteobj prop  */}
         {curNotes.map((note, ind) => {
           return <NoteItem noteObj={note} key={ind} updateNote={updateNote} />;

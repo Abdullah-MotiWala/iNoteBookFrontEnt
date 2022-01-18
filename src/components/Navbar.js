@@ -1,7 +1,13 @@
 import React, { useEffect } from "react";
-import { Link, useLocation } from "react-router-dom";
+import { Link, useLocation, useNavigate } from "react-router-dom";
 
 export default function Navbar() {
+  const navigate = useNavigate();
+  const logOutHandler = () => {
+    localStorage.removeItem("authToken");
+    navigate("login");
+  };
+
   //activing current link
   const location = useLocation();
   const activeLink = (e) => {
@@ -21,7 +27,7 @@ export default function Navbar() {
     else {
       let addedClasses = prevClass.split(" ");
       let laterClass = addedClasses
-        .filter((className => className !== "active"))
+        .filter((className) => className !== "active")
         .join(" ");
       targetEle.className = laterClass;
     }
@@ -38,7 +44,8 @@ export default function Navbar() {
               <li className="nav-item">
                 <Link
                   to="/"
-                   className="nav-link active" onClick={(e) => {
+                  className="nav-link active"
+                  onClick={(e) => {
                     activeLink(e);
                   }}
                   aria-current="page"
@@ -50,23 +57,10 @@ export default function Navbar() {
                 </Link>
               </li>
               <li className="nav-item">
-                <Link to="login"  className="nav-link" onClick={(e) => {
-                    activeLink(e);
-                  }}>
-                  Log In
-                </Link>
-              </li>
-              <li className="nav-item">
-                <Link to="signup"  className="nav-link" onClick={(e) => {
-                    activeLink(e);
-                  }}>
-                  Sign Up
-                </Link>
-              </li>
-              <li className="nav-item">
                 <Link
                   to="about"
-                   className="nav-link" onClick={(e) => {
+                  className="nav-link"
+                  onClick={(e) => {
                     activeLink(e);
                   }}
                   onClick={(e) => {
@@ -79,6 +73,20 @@ export default function Navbar() {
             </ul>
           </div>
         </div>
+        {!localStorage.getItem("authToken") ? (
+          <div className="btn-group" role="group" aria-label="Basic example">
+            <Link to={"signup"} className="btn btn-primary">
+              Signup
+            </Link>
+            <Link to={"login"} className="btn btn-primary mx-2">
+              Login
+            </Link>
+          </div>
+        ) : (
+          <button onClick={logOutHandler} className="btn btn-danger">
+            Logout
+          </button>
+        )}
       </nav>
     </div>
   );

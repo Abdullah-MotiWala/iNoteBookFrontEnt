@@ -5,6 +5,8 @@ import Home from "./components/Home";
 import Navbar from "./components/Navbar";
 import NoteState from "./context/notes/noteState";
 import About from "./components/About";
+import Signup from "./components/auth/Signup";
+import Login from "./components/auth/Login";
 
 function App() {
   return (
@@ -15,6 +17,8 @@ function App() {
           <Routes>
             <Route path="/" element={<Home />} />
             <Route path="about" element={<About />} />
+            <Route path="signup" element={<Signup />} />
+            <Route path="login" element={<Login />} />
           </Routes>
         </div>
       </NoteState>
