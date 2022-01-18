@@ -25,7 +25,7 @@ export default function Notes() {
   };
   const saveUpdNot = () => {
     editNotes(notes.id, notes.etitle, notes.edescription, notes.etags);
-    console.log(notes);
+    fetAllNotes()
     closeRef.current.click();
   };
 

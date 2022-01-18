@@ -36,6 +36,7 @@ const NoteState = (props) => {
       },
       body: JSON.stringify({ title, description, tags })
     });
+    response.json(response);
 
     //logic for adding notes
     const note = {
@@ -62,6 +63,7 @@ const NoteState = (props) => {
           "eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJ1c2VyIjp7ImlkIjoiNjFkNWZlN2JjZjg4ODVmOTRjZTU2M2IyIn0sImlhdCI6MTY0MTQxNDI4OX0.GCI6haE-Y7XWS2u_EIsf0PTwmXFzccXVjAiN2VEIGEA"
       }
     });
+    response.json(response);
 
     // logic for deleting notes
     const afterDel = curNotes.filter((noteObj) => {
@@ -72,7 +74,6 @@ const NoteState = (props) => {
 
   //editing notes
   const editNotes = async (id, eTitle, eDes, eTags) => {
-    console.log(id, eTitle);
     // API call for editing notes
     let url = `${host}/api/notes/updatenotes/${id}`;
     const response = await fetch(url, {
@@ -84,19 +85,21 @@ const NoteState = (props) => {
       },
       body: JSON.stringify({ eTitle, eDes, eTags })
     });
+    response.json(response);
 
     //logic for editing notes
-    for (let i = 0; i < curNotes.length; i++) {
+    let newNotes = JSON.parse(JSON.stringify(curNotes));
+    for (let i = 0; i < newNotes.length; i++) {
       let targetNote = curNotes[i];
       if (targetNote._id === id) {
-        curNotes[i].title = eTitle;
-        curNotes[i].description = eDes;
-        curNotes[i].tags = eTags;
+        newNotes[i].title = eTitle;
+        newNotes[i].description = eDes;
+        newNotes[i].tags = eTags;
+        console.log(curNotes[i]);
         break;
       }
     }
-    setCurNotes(curNotes);
-    console.log(curNotes);
+    setCurNotes(newNotes);
   };
   return (
     <NoteContext.Provider
